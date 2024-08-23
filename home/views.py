@@ -18,3 +18,9 @@ def product_details(request, slug):
     product = get_object_or_404(Product, slug=slug)
     context = {'product': product}
     return render(request, 'product_details.html', context)
+
+def course_video(request, slug):
+    product = get_object_or_404(Product, slug = slug)
+    context = {'product': product}
+    return render(request, 'course_video.html', context)
+
