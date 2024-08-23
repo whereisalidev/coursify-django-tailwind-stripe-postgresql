@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Product
 
 
 
@@ -8,7 +9,9 @@ def home(request):
 
 
 def products(request):
-    return render(request, 'products.html')
+    products = Product.objects.all()
+    context = {'product': products}
+    return render(request, 'products.html', context)
 
 
 def product_details(request):
