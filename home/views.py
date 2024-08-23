@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Product
 
 
@@ -14,5 +14,7 @@ def products(request):
     return render(request, 'products.html', context)
 
 
-def product_details(request):
-    return render(request, 'product_details.html')
+def product_details(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    context = {'product': product}
+    return render(request, 'product_details.html', context)
