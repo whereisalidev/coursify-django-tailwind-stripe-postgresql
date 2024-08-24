@@ -36,7 +36,7 @@
                     <a href="{% url 'enrolled_courses' %}" class="relative text-gray-800 hover:text-indigo-600 text-lg font-medium">
                         Enrolled
                         <span class="absolute left-0 -bottom-1 w-full h-0.5 bg-indigo-600 
-                            {% if request.resolver_match.url_name == 'my_purchases' %} scale-x-100 {% else %} scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 {% endif %}"></span>
+                            {% if request.resolver_match.url_name == 'enrolled_courses' %} scale-x-100 {% else %} scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 {% endif %}"></span>
                     </a>
 
                     {% if user.is_authenticated %}
