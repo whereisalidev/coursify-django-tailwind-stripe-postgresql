@@ -3,39 +3,38 @@
 {% block content %}
 <div class="container mx-auto px-4 py-8">
     <div class="flex flex-wrap -mx-4">
-        <!-- Product Images -->
+        <!-- Course Images -->
         <div class="w-full md:w-1/2 px-4 mb-8">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}"
+            <img src="{{ course.image.url }}" alt="{{ course.name }}"
             class="w-full h-auto rounded-lg shadow-md mb-4">
         </div>
 
-        <!-- Product Details -->
+        <!-- Course Details -->
         <div class="w-full md:w-1/2 px-4">
-            <h2 class="text-3xl font-bold mb-2">{{ product.name }}</h2>
+            <h2 class="text-3xl font-bold mb-2">{{ course.name }}</h2>
             <div class="mb-4">
                 <span class="text-2xl font-bold mr-2">
-                    {% if product.price == 0 %}
-                    Free
+                    {% if course.is_paid %} 
+                    ${{ course.price }}
                     {% else %}
-                    ${{ product.price }}
+                    Free
                     {% endif %}
                 </span>
             </div>
-            <p class="text-gray-700 mb-6">{{ product.description }}</p>
+            <p class="text-gray-700 mb-6">{{ course.description }}</p>
 
             <div class="flex space-x-4 mb-6">
-                {% if product.price == 0 %}
-                <a href="{% url "course_video" product.slug %}">
+                {% if course.is_paid %}
+                    <button
+                    id="checkout-button"
+                    class="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Purchase Course
+                </button>
+                {% else %}
+                <a href="{% url "course_video" course.slug %}">
                     <button
                     class="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     Get Course
-                </button>
-                </a>
-                {% else %}
-                <a href="#">
-                    <button
-                    class="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    Purchase Course
                 </button>
                 </a>
                 {% endif %}
@@ -52,4 +51,33 @@
         </div>
     </div>
 </div>
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+    var stripe = Stripe('{{ STRIPE_PUBLISHABLE_KEY }}');
+
+    var checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', function () {
+        fetch("{% url 'create_checkout_session' course.slug %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (sessionId) {
+            return stripe.redirectToCheckout({ sessionId: sessionId.id });
+        })
+        .then(function (result) {
+            if (result.error) {
+                alert(result.error.message);
+            }
+        })
+        .catch(function (error) {
+            console.error('Error:', error);
+        });
+    });
+</script>
 {% endblock content %}

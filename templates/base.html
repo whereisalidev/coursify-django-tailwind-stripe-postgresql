@@ -15,7 +15,7 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo with Image -->
                 <div class="flex-shrink-0">
-                    <a href="#" class="text-2xl font-bold text-gray-800">Micro-Ecommerce</a>
+                    <a href="#" class="text-2xl font-bold text-gray-800">Coursify</a>
                 </div>
 
                 <!-- Navigation Links -->
@@ -27,18 +27,15 @@
                             {% if request.resolver_match.url_name == 'home' %} scale-x-100 {% else %} scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 {% endif %}"></span>
                     </a>
 
-                    <!-- Products Link -->
-                    <a href="{% url 'product' %}" class="relative text-gray-800 hover:text-indigo-600 text-lg font-medium">
-                        Products
+                    <a href="{% url 'course' %}" class="relative text-gray-800 hover:text-indigo-600 text-lg font-medium">
+                        Courses
                         <span class="absolute left-0 -bottom-1 w-full h-0.5 bg-indigo-600 
-                            {% if request.resolver_match.url_name == 'product' %} scale-x-100 {% else %} scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 {% endif %}"></span>
+                            {% if request.resolver_match.url_name == 'course' %} scale-x-100 {% else %} scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 {% endif %}"></span>
                     </a>
                 </div>
 
-                <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
                     <button class="text-gray-800 hover:text-indigo-600 focus:outline-none">
-                        <!-- Add an icon or text for mobile menu button -->
                         ☰
                     </button>
                 </div>
