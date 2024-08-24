@@ -15,16 +15,25 @@ def courses(request):
     context = {'courses': courses}
     return render(request, 'courses.html', context)
 
+def enrolled_courses(request):
+    courses = Course.objects.filter(enrolled=True)
+    context = {'courses': courses}
+    return render(request, 'enrolled_courses.html', context)
+
 def course_details(request, slug):
     course = get_object_or_404(Course, slug=slug)
     context = {'course': course, 'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY}
     return render(request, 'course_details.html', context)
 
 def course_video(request, slug):
-    course = get_object_or_404(Course, slug = slug)
-    context = {'course': course}
-    return render(request, 'course_video.html', context)
-
+    if request.user.is_authenticated:
+        course = get_object_or_404(Course, slug = slug)
+        course.enrolled = True
+        course.save()
+        context = {'course': course}
+        return render(request, 'course_video.html', context)
+    else: 
+        return redirect('login')
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -55,9 +64,11 @@ def create_checkout_session(request, slug):
 
 def payment_success(request, slug):
     course = get_object_or_404(Course, slug=slug)
-    course.is_paid = False
+    course.purchased = True
     course.save()
     return redirect('course_details', slug=course.slug)
 
 def payment_cancel(request, slug):
     return redirect('course_details', slug=slug)
+
+

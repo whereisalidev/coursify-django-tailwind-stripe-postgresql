@@ -7,7 +7,9 @@ class Course(models.Model):
     price = models.IntegerField(default=0)
     image = models.ImageField(upload_to='uploads/')
     video = models.FileField(upload_to='videos/', null=True, blank=True)
-    is_paid = models.BooleanField(default=False)
+    free = models.BooleanField(default=False)
+    enrolled = models.BooleanField(default=False)
+    purchased = models.BooleanField(default=False)
     slug = models.SlugField(max_length=100, unique=True, blank=True) 
 
     def __str__(self):

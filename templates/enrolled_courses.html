@@ -10,15 +10,7 @@
       <div class="p-4 flex-1">
         <h2 class="text-2xl font-bold mb-2">{{ course.name }}</h2>
         <p class="text-gray-700 mb-2">
-          {% if course.enrolled %} 
-          Enrolled
-          {% else %}
-            {% if course.free %}
-            Free
-            {% else %}
-            ${{ course.price }}
-            {% endif %}
-          {% endif %}
+          {% if course.enrolled %}Enrolled{% endif %}
         </p>
       </div>
       <a href="{% url 'course_details' course.slug %}" class="bg-indigo-600 text-white py-2 px-4 rounded-t-none rounded-b-lg hover:bg-indigo-500 w-full text-center">View Course</a>
@@ -27,6 +19,6 @@
   </div>
 </div>
 {% else %}
-<p>Currently No Courses available</p>
+<p>No Enrolled Courses :( </p>
 {% endif %}
 {% endblock content %}
